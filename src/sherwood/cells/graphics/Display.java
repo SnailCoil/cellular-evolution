@@ -1,17 +1,14 @@
 package sherwood.cells.graphics;
 
-import sherwood.cells.Environment;
+import sherwood.cells.environment.Environment;
 
-import java.awt.*;
-import java.awt.image.BufferStrategy;
+import java.awt.DisplayMode;
+import java.awt.Frame;
+import java.awt.GraphicsConfiguration;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
+import java.awt.Panel;
 
-/**
- * Created with IntelliJ IDEA.
- * User: asherwood
- * Date: 8/28/12
- * Time: 10:17 AM
- * To change this template use File | Settings | File Templates.
- */
 public class Display {
 	private static final int DEFAULT_NUM_BUFFERS = 3;
 	private static DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{

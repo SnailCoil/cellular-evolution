@@ -1,6 +1,6 @@
 package sherwood.cells.physics;
 
-import sherwood.cells.Environment;
+import sherwood.cells.environment.Environment;
 
 public class Engine {
 	Environment environment;

@@ -1,8 +1,9 @@
 package sherwood.cells.graphics;
 
-import sherwood.cells.Environment;
+import sherwood.cells.environment.Environment;
 
-import java.awt.*;
+import java.awt.Graphics2D;
+import java.awt.Panel;
 import java.awt.image.BufferStrategy;
 
 public class ViewPort {
