@@ -2,15 +2,11 @@ package sherwood.cells.graphics;
 
 import sherwood.cells.environment.Environment;
 
-import java.awt.DisplayMode;
-import java.awt.Frame;
-import java.awt.GraphicsConfiguration;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
-import java.awt.Panel;
+import java.awt.*;
+import java.awt.image.BufferStrategy;
 
 public class Display {
-	private static final int DEFAULT_NUM_BUFFERS = 3;
+	private static final int DEFAULT_NUM_BUFFERS = 2;
 	private static DisplayMode[] BEST_DISPLAY_MODES = new DisplayMode[]{
 			new DisplayMode(1920, 1080, 16, 0),
 			new DisplayMode(1920, 1080, 8, 0)
@@ -19,8 +15,10 @@ public class Display {
 	private ViewPort viewPort;
 	private GUI gui;
 	private Frame mainFrame;
+    private int width, height;
+    private BufferStrategy bufferStrategy;
 
-	public Display() {
+    public Display() {
 		this(DEFAULT_NUM_BUFFERS);
 	}
 
@@ -28,25 +26,33 @@ public class Display {
 
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		GraphicsDevice device = env.getDefaultScreenDevice();
-		try {
-			GraphicsConfiguration gc = device.getDefaultConfiguration();
-			device.setFullScreenWindow(mainFrame);
-			mainFrame = new Frame(gc);
-			mainFrame.setUndecorated(true);
-			mainFrame.setIgnoreRepaint(true);
-			if (device.isDisplayChangeSupported()) {
-				chooseBestDisplayMode(device);
-			}
-			mainFrame.createBufferStrategy(numBuffers);
-			Panel panel = new Panel();
-			viewPort = new ViewPort(mainFrame.getBufferStrategy(), numBuffers, panel);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        mainFrame = createFrame(numBuffers, device);
+        bufferStrategy = mainFrame.getBufferStrategy();
+        width = mainFrame.getWidth();
+        height = mainFrame.getHeight();
+        viewPort = new ViewPort(width, height);
+        gui = new GUI(width, height);
 	}
 
-	public void drawEnvironment(Environment environment) {
-		viewPort.drawEnvironment(environment);
+    private Frame createFrame(int numBuffers, GraphicsDevice device) {
+        GraphicsConfiguration gc = device.getDefaultConfiguration();
+        Frame tempFrame = new Frame(gc);
+        tempFrame.setUndecorated(true);
+        tempFrame.setIgnoreRepaint(true);
+        device.setFullScreenWindow(tempFrame);
+        if (device.isDisplayChangeSupported()) {
+            chooseBestDisplayMode(device);
+        }
+        tempFrame.createBufferStrategy(numBuffers);
+        return tempFrame;
+    }
+
+    public void drawEnvironment(Environment environment) {
+        Graphics2D g = (Graphics2D) bufferStrategy.getDrawGraphics();
+        if (!bufferStrategy.contentsLost()) {
+            g.fillRect(0, 0, width, height);
+		    viewPort.drawEnvironment(g, environment);
+        }
 	}
 
 	public boolean hasEnded() {
