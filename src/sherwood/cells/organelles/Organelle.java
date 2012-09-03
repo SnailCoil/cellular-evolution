@@ -1,7 +1,7 @@
 package sherwood.cells.organelles;
 
-import java.util.Collection;
+import sherwood.cells.environment.Environment;
 
 public abstract class Organelle {
-    public abstract void update();
+    public abstract void update(Environment environment);
 }

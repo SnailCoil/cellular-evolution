@@ -1,5 +1,7 @@
 package sherwood.cells;
 
+import sherwood.cells.environment.Environment;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -8,4 +10,10 @@ public class Organism {
 
 	public Organism() {
 	}
+
+    public void update(Environment environment) {
+        for(Cell cell : cells) {
+            cell.update(environment);
+        }
+    }
 }
