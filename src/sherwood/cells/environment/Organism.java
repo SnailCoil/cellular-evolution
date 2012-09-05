@@ -1,6 +1,4 @@
-package sherwood.cells;
-
-import sherwood.cells.environment.Environment;
+package sherwood.cells.environment;
 
 import java.util.ArrayList;
 import java.util.Collection;
